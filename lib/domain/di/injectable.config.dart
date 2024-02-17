@@ -8,7 +8,7 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../../application/bloc/posts/bloc/posts_bloc.dart' as _i5;
+import '../../application/post_provider.dart' as _i5;
 import '../../infrastrucure/posts/post_service.dart' as _i4;
 import '../models/posts_service.dart'
     as _i3; // ignore_for_file: unnecessary_lambdas
@@ -26,6 +26,7 @@ _i1.GetIt $initGetIt(
     environmentFilter,
   );
   gh.lazySingleton<_i3.PostRepository>(() => _i4.PostRepo());
-  gh.factory<_i5.PostsBloc>(() => _i5.PostsBloc(get<_i3.PostRepository>()));
+  gh.factory<_i5.PostsProvider>(
+      () => _i5.PostsProvider(get<_i3.PostRepository>()));
   return get;
 }

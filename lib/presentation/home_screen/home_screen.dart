@@ -1,9 +1,9 @@
-import 'package:api_integration_app/application/bloc/posts/bloc/posts_bloc.dart';
+import 'package:api_integration_app/application/post_provider.dart';
 import 'package:api_integration_app/utils/styles.dart';
 import 'package:api_integration_app/presentation/home_screen/widgets/appbar.dart';
 import 'package:api_integration_app/presentation/home_screen/widgets/post_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,10 +15,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<PostsBloc>(context).add(PostsEvent.getPosts());
-    });
+     Provider.of<PostsProvider>(context,listen: false).getPosts();
+   super.initState();
+
+     
   }
 
   @override
@@ -28,13 +28,14 @@ class _HomePageState extends State<HomePage> {
         body: Padding(
             padding: mainPadding,
             child:
-                BlocBuilder<PostsBloc, PostsState>(builder: (context, state) {
-              if (state.isload) {
+Consumer<PostsProvider>(builder: (context, postProvider, child) {
+ 
+if (postProvider.isload) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state.isError) {
+              } else if (postProvider.posts.isEmpty) {
                 return const Center(
                   child: Text(
-                    'Error Occurred',
+                    'No Posts Available',
                   ),
                 );
               } else {
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     Expanded(
-                      child: PostsView(posts: state.posts!),
+                      child: PostsView(posts: postProvider.posts),
                     ),
                   ],
                 );

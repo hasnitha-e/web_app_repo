@@ -1,10 +1,10 @@
 import 'dart:ui';
-import 'package:api_integration_app/application/bloc/posts/bloc/posts_bloc.dart';
+import 'package:api_integration_app/application/post_provider.dart';
 import 'package:api_integration_app/domain/di/injectable.dart';
 import 'package:api_integration_app/presentation/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<PostsBloc>(),
+    return MultiProvider(providers: [ChangeNotifierProvider(create: (context)=>getIt<PostsProvider>())],
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         scrollBehavior: MaterialScrollBehavior().copyWith(

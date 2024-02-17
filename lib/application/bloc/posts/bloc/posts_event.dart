@@ -1,6 +1,0 @@
-part of 'posts_bloc.dart';
-
-@freezed
-class PostsEvent with _$PostsEvent {
-   factory PostsEvent.getPosts() = _GetPosts;
-}
